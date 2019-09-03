@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "generate": "node generatePredictions",
-    "export": "mongoexport --collection predictions --db guessjs_dev --out results.json --jsonArray",
+    "export": "mongoexport --collection predictions --db guessjs_dev --out unparsed-results.json --jsonArray",
     "parse": "node jsonParse",
     "predict": "npm run generate && npm run export && npm run parse"
   },
