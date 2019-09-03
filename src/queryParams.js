@@ -5,7 +5,7 @@ const queryParams = {
     reportRequests: [
       {
         viewId: config.auth.viewID,
-        dateRanges: [{ startDate: "2018-09-01", endDate: "2019-08-31" }],
+        dateRanges: [{ startDate: "365daysago", endDate: "yesterday" }],
         metrics: [{ expression: "ga:pageviews" }, { expression: "ga:exits" }],
         dimensions: [{ name: "ga:previousPagePath" }, { name: "ga:pagePath" }],
         orderBys: [
