@@ -1,6 +1,5 @@
-const mongoose = require("mongoose")
-const Prediction = require("./models/prediction")
 const config = require("../config")
+const fs = require("fs")
 
 // Generates & saves predictions based off Google Analytics response
 const saveReports = async reports => {
@@ -77,32 +76,28 @@ const saveReports = async reports => {
       return page
     })
     .sort((a, b) => {
-      // return b.topNextPageProbability - a.topNextPageProbability
-      return b.pageviews - a.pageviews
+      return b.topNextPageProbability - a.topNextPageProbability
+      // return b.pageviews - a.pageviews
     })
-  for (let page of pages) {
-    // TODO - remove console logs
-    console.log(page)
-    console.log("\n")
-  }
-
-  await savePagesToDatabase(pages)
+  await savePagesToJson(pages)
 }
 
-// Adds each page (and its associated prediction) to the database.
-// If a page already exists, its record is updated based on the most recent Google Analytics data.
-const savePagesToDatabase = async pages => {
-  mongoose.connect(config.db.mongoURL)
+const savePagesToJson = pages => {
+  let json = {
+    data: [],
+  }
   for (let page of pages) {
     const prediction = {
       pagePath: page.pagePath,
       nextPagePath: page.nextPages[0] ? page.nextPages[0].pagePath : "",
       nextPageCertainty: page.nextPages[0] ? page.topNextPageProbability : "",
     }
-    await Prediction.update({ pagePath: prediction.pagePath }, prediction, {
-      upsert: true,
-    })
+    json.data.push(prediction)
   }
+
+  fs.writeFileSync("./predictions.json", JSON.stringify(json, null, 2), err => {
+    if (err) throw err
+  })
 }
 
 module.exports = { saveReports: saveReports }

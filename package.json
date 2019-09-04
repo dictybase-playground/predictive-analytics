@@ -4,16 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "node generatePredictions",
-    "export": "mongoexport --collection predictions --db guessjs_dev --out unparsed-results.json --jsonArray",
-    "parse": "node jsonParse",
-    "predict": "npm run generate && npm run export && npm run parse"
+    "predict": "node generatePredictions"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.1.0",
-    "googleapis": "^42.0.0",
-    "mongoose": "^5.6.11"
+    "googleapis": "^42.0.0"
   }
 }
