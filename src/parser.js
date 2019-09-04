@@ -80,6 +80,7 @@ const saveReports = async reports => {
       // return b.pageviews - a.pageviews
     })
   await savePagesToJson(pages)
+  await jsonToCsv()
 }
 
 const savePagesToJson = pages => {
@@ -98,6 +99,26 @@ const savePagesToJson = pages => {
   fs.writeFileSync("./predictions.json", JSON.stringify(json, null, 2), err => {
     if (err) throw err
   })
+  console.log("created predictions.json")
+}
+
+const jsonToCsv = () => {
+  const json = fs.readFileSync("./predictions.json")
+  const parsedJson = JSON.parse(json)
+  const keys = Object.keys(parsedJson.data[0])
+  const csvContent =
+    keys.join(",") +
+    "\n" +
+    parsedJson.data
+      .map(row => {
+        return keys.map(k => row[k]).join(",")
+      })
+      .join("\n")
+
+  fs.writeFileSync("./predictions.csv", csvContent, err => {
+    if (err) throw err
+  })
+  console.log("created predictions.csv")
 }
 
 module.exports = { saveReports: saveReports }
