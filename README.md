@@ -15,7 +15,6 @@ $ npm install
 **Prerequisites:**
 
 - A Google Analytics account
-- Mongo installed on your computer/server [(Instructions)](https://docs.mongodb.com/manual/installation/)
 
 ### Create Your Credentials
 
@@ -91,30 +90,14 @@ Click the accounts dropdown (it's located in the upper lefthand corner of the sc
 
 ### Generate predictions
 
-#### i) Start mongod
-
-If mongod is not running, start it:
-
-```
-$ mongod
-```
-
-#### ii) Run script
+#### i) Run script
 
 ```
 $ npm run predict
 ```
 
-If this is successful, you should see a new file created -- `predictions.json`. This will be an array of data containing the
-`pagePath`, its `nextPageCertainty` and predicted `nextPagePath`.
-
-You can also explore the results in Mongo:
-
-```
-$ mongo
-$ use guessjs_dev
-$ db.predictions.find()
-```
+If this is successful, you should see two new files created -- `predictions.json` and `predictions.csv`. These contain all
+generated predictions sorted by `nextPageCertainty` value.
 
 The results are based on the last year's worth of data relative to the day you run the script. You can easily change the
 date range by editing the `queryParams.js` file.
